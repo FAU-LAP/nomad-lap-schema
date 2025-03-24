@@ -11,11 +11,10 @@
 #     )
 
 # from nomad.datamodel.data import Schema
-from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
+from nomad.datamodel.metainfo.annotations import ELNAnnotation
 from nomad.config import config
-from nomad.datamodel.metainfo.basesections.v1 import Entity
 from nomad.datamodel.metainfo.eln import ELNExperiment, ELNSample
-from nomad.metainfo import Quantity, SchemaPackage
+from nomad.metainfo import Quantity, SchemaPackage, SectionProxy
 
 configuration = config.get_plugin_entry_point(
     "nomad_lap_schema.schema_packages:schema_package_entry_point"
@@ -26,8 +25,7 @@ m_package = SchemaPackage()
 
 class Sample_LAP(ELNSample):
     process_of_origin = Quantity(
-        type=Entity,
-        shape=["*"],
+        type=SectionProxy("Experiment_LAP"),
         description="The process of origin of the sample.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
@@ -36,6 +34,7 @@ class Sample_LAP(ELNSample):
 class Experiment_LAP(ELNExperiment):
     samples = Quantity(
         type=Sample_LAP,
+        shape=["*"],
         description="The samples used in the experiment.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
