@@ -77,7 +77,7 @@ select = [
     "UP",
     # isort
     "I",
-    # pylint 
+    # pylint
     "PL",
 ]
 
@@ -111,11 +111,7 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [project.entry-points.'nomad.plugin']
-parser_entry_point = "nomad_lap_schema.parsers:parser_entry_point"
 schema_package_entry_point = "nomad_lap_schema.schema_packages:schema_package_entry_point"
-normalizer_entry_point = "nomad_lap_schema.normalizers:normalizer_entry_point"
-app_entry_point = "nomad_lap_schema.apps:app_entry_point"
-example_upload_entry_point = "nomad_lap_schema.example_uploads:example_upload_entry_point"
 [tool.cruft]
 # Avoid updating workflow files, this leads to permissions issues
 skip = [".github/*"]
