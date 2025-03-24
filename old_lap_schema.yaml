@@ -1,0 +1,809 @@
+#subsections will be implemented only after we fully understood implementation and consequences!
+definitions:
+  name: "2.34.51_Base_classes"
+  sections:
+    Research Question:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      quantities:
+        Name:
+          type: str
+          description: Phrase your question
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        #Related measurement:
+        #  type: Measurement
+        #  description: Measurements that give answers to the question
+        #  shape: ['*']
+        #  m_annotations:
+        #    eln:
+        #      component: ReferenceEditQuantity
+    Project:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      quantities:
+        Name:
+          type: str
+          description: General Name of the project
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        description:
+          type: str
+          description: General Description of the project
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Related research questions:
+          type: Research Question
+          description: RQs related to the project
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Related Samples:
+          type: ExperimentalObject
+          description: Devices connected to this project
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+              
+    Device:
+      base_sections:
+        - ExperimentalObject
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Device Number:
+          type: str
+          description: Device Number on the Chip
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Type:
+          type: str
+          description: Type of the Device
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Chip_of_origin:
+          type: Chip
+          description: Chip the Device is located on
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    Chip:
+      base_sections:
+        - ExperimentalObject
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Chip_Number:
+          type: str
+          description: Chip Number provided by Jörg
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Width:
+          type: np.float64
+          unit: mm
+          description: Width of the Chip
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+              defaultDisplayUnit: mm
+        Length:
+          type: np.float64
+          unit: mm
+          description: Length of the Chip
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+              defaultDisplayUnit: mm
+        Wafer:
+          type: Wafer
+          description: Wafer the chip is originating from
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+   
+    Wafer:
+      base_sections:
+        - ExperimentalObject
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Wafer Number:
+          type: str
+          description: Wafer Number provided by the manufacturer
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Manufacturer:
+          type: str
+          description: Name of the manufacturer
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Material:
+          type: Wafer-Material
+          description: ...
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Crystal structure:
+          type: 
+            type_kind: Enum
+            type_data:
+              - polytype
+              - amorphous
+          description: ...
+          m_annotations:
+            eln:
+              component: AutocompleteEditQuantity
+        Thickness:
+          type: np.float64
+          unit: um
+          description: ...
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        Doping:
+          type: str
+          description: Doping layers starting from the surface of the sample
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+          subsections:
+            Dopand:
+              type: str
+              description: Dopand atom
+              component: StringEditQuantity
+            Thickness:
+              type: np.float64
+              description: Thickness of the doped layer
+              component: NumberEditQuantity
+              unit: um
+            Concentration:
+              type: np.float64
+              unit: 1/cm**3
+              description: Doping concentration of the layer
+              component: NumberEditQuantity             
+        Orientation:
+          type: 
+            type_kind: Enum
+            type_data:
+              - on axis
+              - 3° off axis
+          description: crystal orientation
+          m_annotations:
+            eln:
+              component: AutocompleteEditQuantity
+        Delivery Date:
+          type: Datetime
+          description: Date of Delivery
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        Resistivity:
+          type: np.float64
+          unit: V/A
+          description: Measured resistivity of the Wafer
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+
+    Wafer-Material:
+      base_sections:
+        - nomad.datamodel.metainfo.eln.Substance
+        - nomad.datamodel.data.EntryData
+      m_annotations:
+        eln:
+          hide: []
+          
+    General_Sample:
+      base_sections:
+        - ExperimentalObject
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Type:
+          type: str
+          description: Type of the Sample
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Material:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+
+    ExperimentalObject:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        ID:
+          type: str
+          description: Unique ID
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Name:
+          type: str
+          description: Name given by the user
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Creation time:
+          type: Datetime
+          description: Time of creation
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        Remark:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Process of origin:
+          type: Experiment
+          #shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    Evaluation:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        ID:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Timestamp:
+          type: Datetime
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        Name:
+          type: str
+          description: Name of the evaluation
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Remark:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Type:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Description:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Data:
+          description: Data used for this evaluation
+          type: Data
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Protocol:
+          description: Protocol used for this evaluation
+          type: EvaluationProtocol
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Person_who_did_it:
+          type: Author
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: AuthorEditQuantity
+
+    Data: #Bewertungssystem Fehlt!
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        ID:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Timestamp:
+          type: Datetime
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        data_file:
+          type: str
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: FileEditQuantity
+        Type:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        FileType:
+          type: str
+          description: File Type
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Importance:
+          type: int
+          description: How valuable is this data? \#1 low - \#5 high
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+              minValue: 1
+              maxValue: 5
+        Experiment:
+          description: What experiment is this data from?
+          type: Experiment
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Evaluation:
+          description: What Evaluation is this data from?
+          type: Evaluation
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    Maintenance:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      quantities:
+        Timestamp:
+          type: Datetime
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        Description:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Purpose:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Performed at:
+          type: Facility
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Performed by:
+          type: Author
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: AuthorEditQuantity
+    
+    Repair:
+      base_sections: 
+        - 'Maintenance'
+      quantities:
+        SomeQuantity:
+          type: str
+          m_annotations:
+            eln:
+              hide: []
+
+    Calibration:
+      base_sections: 
+        - 'Maintenance'
+      quantities:
+        Parameter:
+          type:
+            type_kind: Enum
+            type_data:
+              - Z-Ratio
+              - lambda-shift
+              - Intensity
+          m_annotations:
+            eln:
+              component: EnumEditQuantity
+        Result:
+          type: str
+          description: What was the Result of the Calibration?
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Experiments used:
+          type: Experiment
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    Process:
+      base_sections:
+        - Experiment
+    
+    Measurement: #Bewertungssystem fehlt!
+      base_sections:
+        - Experiment
+      quantities:
+        Related research questions:
+          type: Research Question
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    Experiment:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      quantities:
+        ID:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Timestamp:
+          type: Datetime
+          m_annotations:
+            eln:
+              component: DateTimeEditQuantity
+        Remark:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        ExperimentType: #all these likley need a controlled vocabulary
+          type: str
+          description: ExperimentType is the name of the experimental method, e.g. RCA cleaning, Hall-effect measurement
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Description:
+          type: str
+          description: General Remarks
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Protocol:
+          type: ExperimentalProtocol
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Facility:
+          type: Facility
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Samples:
+         type: ExperimentalObject
+         shape: ['*']
+         m_annotations:
+           eln:
+             component: ReferenceEditQuantity
+        SpecialEquipment:
+          type: Equipment
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Experimentator:
+          type: Author
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: AuthorEditQuantity
+
+    Facility:
+      base_sections:
+        - nomad.datamodel.data.EntryData
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        ID:
+          type: str
+          description: ID of the Facility
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Name:
+          type: str
+          description: Name of the Facility
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Version number:
+          type: str
+          description: Versionnumber of the facility
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Patchnotes:
+          shape: ['*']
+          type: str
+          description: Notes of the changes done
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Description:
+          type: str
+          description: Description of the facility
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Betriebsanweisungen:
+          type: str
+          description: Betriebsanweisungen of the facility
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Used Consumables:
+          type: Consumable
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Personwhoisresponsible:
+          type: Author
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: AuthorEditQuantity
+        Room:
+          type: Room
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Used Equipment:
+          type: Equipment
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    Consumable:
+      base_sections:
+        - nomad.datamodel.data.EntryData
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Name:
+          type: str
+          description: Name of the supplier
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Batch number:
+          type: str
+          description: Batch number
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Amount in unit:
+          type: np.float64
+          description: Amount of the consumable
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+        Supplier:
+          type: Supplier
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Storage Room:
+          type: Room
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+        Personwhoboughtit:
+          type: Author
+          shape: ['*']
+          m_annotations:
+            eln:
+              component: AuthorEditQuantity
+
+    Equipment:
+      base_sections:
+        - nomad.datamodel.data.EntryData
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Inventory number:
+          type: str
+          description: inventory number of the piece of equipment
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Serial number:
+          type: str
+          description: The instrument's serial number
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Version number:
+          type: str
+          description: Version number of the equipment
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Patchnotes:
+          shape: ['*']
+          type: str
+          description: Notes of the changes done
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Manufacturer:
+          type: str
+          description: The instrument's manufacturer
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Supplier:
+          type: Supplier
+          m_annotations:
+            eln:
+              component: ReferenceEditQuantity
+
+    EvaluationProtocol:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        ID:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Name:
+          type: str
+          description: Name of the Evaluation
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Description:
+          type: str
+          description: Description of the Evaluation
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Version:
+          type: str
+          description: Version Number
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+
+    ExperimentalProtocol:
+      base_sections:
+        - "nomad.datamodel.data.EntryData"
+      quantities:
+        ID:
+          type: str
+          description: ...
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Name:
+          type: str
+          description: Name of the Process
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Description:
+          type: str
+          description: Description of the Process
+          m_annotations:
+            eln:
+              component: RichTextEditQuantity
+        Version:
+          type: str
+          description: Version Number
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+
+    Room:
+      base_sections:
+        - nomad.datamodel.data.EntryData
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        FAMOS-CODE:
+          type: str
+          description: FAMOS Code from Univis
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        GPS:
+          type: str
+          description: GPS Coordinates of the Room
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+
+    Supplier:
+      base_sections:
+        - nomad.datamodel.data.EntryData
+      m_annotations:
+        eln:
+          hide: []
+      quantities:
+        Name:
+          type: str
+          description: Name of the supplier
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Address:
+          type: str
+          description: The supplier's address
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        How to order:
+          type: str
+          description: Description of how the order should be placed
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Contact person:
+          type: str
+          description: Name of the contact person
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+        Address of the contact person:
+          type: str
+          description: The contact person's address
+          m_annotations:
+            eln:
+              component: StringEditQuantity

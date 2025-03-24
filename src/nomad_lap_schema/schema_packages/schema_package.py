@@ -33,7 +33,7 @@ class Sample_LAP(ELNSample):
 
 class Experiment_LAP(ELNExperiment):
     samples = Quantity(
-        type=Sample_LAP,
+        type=SectionProxy("Sample_LAP"),
         shape=["*"],
         description="The samples used in the experiment.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
