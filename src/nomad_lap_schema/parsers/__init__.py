@@ -1,18 +1,18 @@
-from nomad.config.models.plugins import ParserEntryPoint
-from pydantic import Field
+# from nomad.config.models.plugins import ParserEntryPoint
+# from pydantic import Field
 
 
-class NewParserEntryPoint(ParserEntryPoint):
-    parameter: int = Field(0, description='Custom configuration parameter')
+# class NewParserEntryPoint(ParserEntryPoint):
+#     parameter: int = Field(0, description='Custom configuration parameter')
 
-    def load(self):
-        from nomad_lap_schema.parsers.parser import NewParser
+#     def load(self):
+#         from nomad_lap_schema.parsers.parser import NewParser
 
-        return NewParser(**self.dict())
+#         return NewParser(**self.dict())
 
 
-parser_entry_point = NewParserEntryPoint(
-    name='NewParser',
-    description='New parser entry point configuration.',
-    mainfile_name_re='.*\.newmainfilename',
-)
+# parser_entry_point = NewParserEntryPoint(
+#     name='NewParser',
+#     description='New parser entry point configuration.',
+#     mainfile_name_re='.*\.newmainfilename',
+# )
