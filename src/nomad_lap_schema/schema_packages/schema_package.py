@@ -11,8 +11,8 @@ if TYPE_CHECKING:
     )
 
 from nomad.config import config
-from nomad.datamodel.data import Schema
-from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
+# from nomad.datamodel.data import Schema
+# from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
 from nomad.metainfo import Quantity, SchemaPackage
 from nomad.datamodel.metainfo.eln import ELNSample
 from nomad.datamodel.metainfo.basesections.v1 import EntityReference
