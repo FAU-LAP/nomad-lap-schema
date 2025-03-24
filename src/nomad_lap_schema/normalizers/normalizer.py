@@ -13,14 +13,14 @@ if TYPE_CHECKING:
 from nomad.config import config
 from nomad.normalizing import Normalizer
 
-configuration = config.get_plugin_entry_point(
-    'nomad_lap_schema.normalizers:normalizer_entry_point'
-)
+# configuration = config.get_plugin_entry_point(
+#     'nomad_lap_schema.normalizers:normalizer_entry_point'
+# )
 
 
-class NewNormalizer(Normalizer):
-    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
-        super().normalize(archive, logger)
-        logger.info('NewNormalizer.normalize', parameter=configuration.parameter)
-        if archive.results and archive.results.material:
-            archive.results.material.elements = ['C', 'O']
+# class NewNormalizer(Normalizer):
+#     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+#         super().normalize(archive, logger)
+#         logger.info('NewNormalizer.normalize', parameter=configuration.parameter)
+#         if archive.results and archive.results.material:
+#             archive.results.material.elements = ['C', 'O']

@@ -19,14 +19,14 @@ configuration = config.get_plugin_entry_point(
 )
 
 
-class NewParser(MatchingParser):
-    def parse(
-        self,
-        mainfile: str,
-        archive: 'EntryArchive',
-        logger: 'BoundLogger',
-        child_archives: dict[str, 'EntryArchive'] = None,
-    ) -> None:
-        logger.info('NewParser.parse', parameter=configuration.parameter)
+# class NewParser(MatchingParser):
+#     def parse(
+#         self,
+#         mainfile: str,
+#         archive: 'EntryArchive',
+#         logger: 'BoundLogger',
+#         child_archives: dict[str, 'EntryArchive'] = None,
+#     ) -> None:
+#         logger.info('NewParser.parse', parameter=configuration.parameter)
 
-        archive.workflow2 = Workflow(name='test')
+#         archive.workflow2 = Workflow(name='test')
