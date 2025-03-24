@@ -13,9 +13,9 @@
 # from nomad.datamodel.data import Schema
 # from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
 from nomad.config import config
-from nomad.metainfo import Quantity, SchemaPackage
-from nomad.datamodel.metainfo.eln import ELNSample
 from nomad.datamodel.metainfo.basesections.v1 import EntityReference
+from nomad.datamodel.metainfo.eln import ELNSample
+from nomad.metainfo import Quantity, SchemaPackage
 
 configuration = config.get_plugin_entry_point(
     'nomad_lap_schema.schema_packages:schema_package_entry_point'
