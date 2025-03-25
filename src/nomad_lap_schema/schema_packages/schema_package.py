@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 from nomad.datamodel.data import Schema
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
 from nomad.config import config
-from nomad.datamodel.metainfo.eln import ELNExperiment, ELNSample
+from nomad.datamodel.metainfo.eln import ELNExperiment, ELNSample, EntryData
 from nomad.metainfo import Quantity, SchemaPackage, SectionProxy, Section
 
 configuration = config.get_plugin_entry_point(
@@ -26,7 +26,7 @@ m_package = SchemaPackage()
 class Sample_LAP(ELNSample):
     m_def = Section()
     process_of_origin = Quantity(
-        type=EntryArchive,
+        type=EntryData,
         description="The process of origin of the sample.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
@@ -53,7 +53,7 @@ class Wafer_LAP(Sample_LAP):
 
 class Experiment_LAP(ELNExperiment):
     samples = Quantity(
-        type=SectionProxy("Sample_LAP"),
+        type=Sample_LAP,
         shape=["*"],
         description="The samples used in the experiment.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
