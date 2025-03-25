@@ -198,7 +198,7 @@ class Calibration_Parameter(ArchiveSection):
 
 class Calibration_LAP(Maintenance_LAP):
     calibrated_parameters = SubSection(
-        type=Calibration_Parameter,
+        section_def=Calibration_Parameter,
         repeats=True,
     )
 
