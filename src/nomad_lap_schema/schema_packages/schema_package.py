@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     pass
 
 from nomad.config import config
-from nomad.datamodel.data import Schema
+from nomad.datamodel.data import Schema, Author
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
 from nomad.datamodel.metainfo.eln import ELNExperiment, ELNSample
 from nomad.metainfo import Quantity, SchemaPackage, Section
@@ -64,6 +64,59 @@ class Equipment_LAP(Schema):
         type=str,
         description="Serial number of the equipment",
         a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    version_number = Quantity(
+        type=str,
+        description="Version number of the equipment",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    patchnotes = Quantity(
+        type=str,
+        description="Notes of the last changes",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    manufacturer = Quantity(
+        type=str,
+        description="Manufacturer of the equipment",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    supplier = Quantity(
+        type=Supplier_LAP,
+        description="Supplier of the equipment",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+
+
+class Consumable_LAP(Schema):
+    name = Quantity(
+        type=str,
+        description="Name of the consumable",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    supplier = Quantity(
+        type=Supplier_LAP,
+        description="Supplier of the consumable",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    batch_number = Quantity(
+        type=str,
+        description="Batch number of the consumable",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    amount_in_unit = Quantity(
+        type=float,
+        description="Amount of the consumable",
+        a_eln=ELNAnnotation(component="NumberEditQuantity"),
+    )
+    storage_room = Quantity(
+        type=Room_LAP,
+        description="Storage room of the consumable",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    person_who_ordered = Quantity(
+        type=Author,
+        description="Person who ordered the consumable",
+        a_eln=ELNAnnotation(component="AuthorEditQuantity"),
     )
 
 

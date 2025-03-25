@@ -438,79 +438,7 @@ definitions:
             eln:
               component: ReferenceEditQuantity
 
-    Consumable:
-      base_sections:
-        - nomad.datamodel.data.EntryData
-      m_annotations:
-        eln:
-          hide: []
-      quantities:
-        Name:
-          type: str
-          description: Name of the supplier
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Batch number:
-          type: str
-          description: Batch number
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Amount in unit:
-          type: np.float64
-          description: Amount of the consumable
-          m_annotations:
-            eln:
-              component: NumberEditQuantity
-        Supplier:
-          type: Supplier
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
-        Storage Room:
-          type: Room
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
-        Personwhoboughtit:
-          type: Author
-          shape: ['*']
-          m_annotations:
-            eln:
-              component: AuthorEditQuantity
 
-    Equipment:
-      base_sections:
-        - nomad.datamodel.data.EntryData
-      m_annotations:
-        eln:
-          hide: []
-      quantities:
-        Version number:
-          type: str
-          description: Version number of the equipment
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Patchnotes:
-          shape: ['*']
-          type: str
-          description: Notes of the changes done
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Manufacturer:
-          type: str
-          description: The instrument's manufacturer
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Supplier:
-          type: Supplier
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
 
     EvaluationProtocol:
       base_sections:
