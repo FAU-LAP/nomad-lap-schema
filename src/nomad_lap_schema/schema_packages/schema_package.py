@@ -6,10 +6,10 @@ if TYPE_CHECKING:
     pass
 
 from nomad.config import config
-from nomad.datamodel.data import Schema, Author
+from nomad.datamodel.data import ArchiveSection, Author, Schema
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
-from nomad.datamodel.metainfo.eln import ELNExperiment, ELNSample
-from nomad.metainfo import Quantity, SchemaPackage, Section
+from nomad.datamodel.metainfo.eln import ELNExperiment, ELNInstrument, ELNSample
+from nomad.metainfo import Datetime, Quantity, SchemaPackage, Section, SubSection
 
 configuration = config.get_plugin_entry_point(
     "nomad_lap_schema.schema_packages:schema_package_entry_point"
@@ -117,6 +117,89 @@ class Consumable_LAP(Schema):
         type=Author,
         description="Person who ordered the consumable",
         a_eln=ELNAnnotation(component="AuthorEditQuantity"),
+    )
+
+
+class Facility_LAP(ELNInstrument):
+    version_number = Quantity(
+        type=str,
+        description="Version number of the facility",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    patchnotes = Quantity(
+        type=str,
+        description="Notes of the last changes",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    betriebsanweisung = Quantity(
+        type=str,
+        description="Betriebsanweisungen of the facility",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    used_consumables = Quantity(
+        type=Consumable_LAP,
+        shape=["*"],
+        description="Consumables used in the facility",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    responsible_person = Quantity(
+        type=Author,
+        description="Person responsible for the facility",
+        a_eln=ELNAnnotation(component="AuthorEditQuantity"),
+    )
+    room = Quantity(
+        type=Room_LAP,
+        description="Room of the facility",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    equipment = Quantity(
+        type=Equipment_LAP,
+        shape=["*"],
+        description="Equipment used in the facility",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+
+
+class Maintenance_LAP(Schema):
+    timestamp = Quantity(
+        type=Datetime,
+        description="The date and time associated with this section.",
+        a_eln=dict(component="DateTimeEditQuantity"),
+    )
+    description = Quantity(
+        type=str,
+        description="Description of the maintenance",
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
+    )
+    performed_by = Quantity(
+        type=Author,
+        description="Person who performed the maintenance",
+        a_eln=ELNAnnotation(component="AuthorEditQuantity"),
+    )
+    facility = Quantity(
+        type=Facility_LAP,
+        description="Facility that was maintained",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+
+
+class Calibration_Parameter(ArchiveSection):
+    parameter = Quantity(
+        type=str,
+        description="Name of the parameter",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    value = Quantity(
+        type=float,
+        description="Value of the parameter",
+        a_eln=ELNAnnotation(component="NumberEditQuantity"),
+    )
+
+
+class Calibration_LAP(Maintenance_LAP):
+    calibrated_parameters = SubSection(
+        type=Calibration_Parameter,
+        repeats=True,
     )
 
 

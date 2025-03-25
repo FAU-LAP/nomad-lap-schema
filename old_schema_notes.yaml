@@ -250,34 +250,12 @@ definitions:
       base_sections:
         - "nomad.datamodel.data.EntryData"
       quantities:
-        Timestamp:
-          type: Datetime
-          m_annotations:
-            eln:
-              component: DateTimeEditQuantity
-        Description:
-          type: str
-          description: General Remarks
-          m_annotations:
-            eln:
-              component: RichTextEditQuantity
         Purpose:
           type: str
           description: General Remarks
           m_annotations:
             eln:
               component: RichTextEditQuantity
-        Performed at:
-          type: Facility
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
-        Performed by:
-          type: Author
-          shape: ['*']
-          m_annotations:
-            eln:
-              component: AuthorEditQuantity
     
     Repair:
       base_sections: 
@@ -290,25 +268,7 @@ definitions:
               hide: []
 
     Calibration:
-      base_sections: 
-        - 'Maintenance'
       quantities:
-        Parameter:
-          type:
-            type_kind: Enum
-            type_data:
-              - Z-Ratio
-              - lambda-shift
-              - Intensity
-          m_annotations:
-            eln:
-              component: EnumEditQuantity
-        Result:
-          type: str
-          description: What was the Result of the Calibration?
-          m_annotations:
-            eln:
-              component: RichTextEditQuantity
         Experiments used:
           type: Experiment
           m_annotations:
@@ -372,11 +332,6 @@ definitions:
               component: AuthorEditQuantity
 
     Facility:
-      base_sections:
-        - nomad.datamodel.data.EntryData
-      m_annotations:
-        eln:
-          hide: []
       quantities:
         ID:
           type: str
@@ -390,55 +345,12 @@ definitions:
           m_annotations:
             eln:
               component: StringEditQuantity
-        Version number:
-          type: str
-          description: Versionnumber of the facility
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Patchnotes:
-          shape: ['*']
-          type: str
-          description: Notes of the changes done
-          m_annotations:
-            eln:
-              component: StringEditQuantity
         Description:
           type: str
           description: Description of the facility
           m_annotations:
             eln:
               component: RichTextEditQuantity
-        Betriebsanweisungen:
-          type: str
-          description: Betriebsanweisungen of the facility
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Used Consumables:
-          type: Consumable
-          shape: ['*']
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
-        Personwhoisresponsible:
-          type: Author
-          shape: ['*']
-          m_annotations:
-            eln:
-              component: AuthorEditQuantity
-        Room:
-          type: Room
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
-        Used Equipment:
-          type: Equipment
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
-
-
 
     EvaluationProtocol:
       base_sections:
@@ -500,7 +412,6 @@ definitions:
           m_annotations:
             eln:
               component: StringEditQuantity
-
 
     Supplier:
       base_sections:
