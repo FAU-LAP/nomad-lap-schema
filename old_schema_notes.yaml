@@ -50,68 +50,7 @@ definitions:
           m_annotations:
             eln:
               component: ReferenceEditQuantity
-              
-    Device:
-      base_sections:
-        - ExperimentalObject
-      m_annotations:
-        eln:
-          hide: []
-      quantities:
-        Device Number:
-          type: str
-          description: Device Number on the Chip
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Type:
-          type: str
-          description: Type of the Device
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Chip_of_origin:
-          type: Chip
-          description: Chip the Device is located on
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
 
-    Chip:
-      base_sections:
-        - ExperimentalObject
-      m_annotations:
-        eln:
-          hide: []
-      quantities:
-        Chip_Number:
-          type: str
-          description: Chip Number provided by Jörg
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Width:
-          type: np.float64
-          unit: mm
-          description: Width of the Chip
-          m_annotations:
-            eln:
-              component: NumberEditQuantity
-              defaultDisplayUnit: mm
-        Length:
-          type: np.float64
-          unit: mm
-          description: Length of the Chip
-          m_annotations:
-            eln:
-              component: NumberEditQuantity
-              defaultDisplayUnit: mm
-        Wafer:
-          type: Wafer
-          description: Wafer the chip is originating from
-          m_annotations:
-            eln:
-              component: ReferenceEditQuantity
    
     Wafer:
       base_sections:
@@ -157,38 +96,7 @@ definitions:
               type: np.float64
               unit: 1/cm**3
               description: Doping concentration of the layer
-              component: NumberEditQuantity             
-        Orientation:
-          type: 
-            type_kind: Enum
-            type_data:
-              - on axis
-              - 3° off axis
-          description: crystal orientation
-          m_annotations:
-            eln:
-              component: AutocompleteEditQuantity
-        Delivery Date:
-          type: Datetime
-          description: Date of Delivery
-          m_annotations:
-            eln:
-              component: DateTimeEditQuantity
-        Resistivity:
-          type: np.float64
-          unit: V/A
-          description: Measured resistivity of the Wafer
-          m_annotations:
-            eln:
               component: NumberEditQuantity
-
-    Wafer-Material:
-      base_sections:
-        - nomad.datamodel.metainfo.eln.Substance
-        - nomad.datamodel.data.EntryData
-      m_annotations:
-        eln:
-          hide: []
           
     General_Sample:
       base_sections:
@@ -213,12 +121,6 @@ definitions:
         eln:
           hide: []
       quantities:
-        Remark:
-          type: str
-          description: General Remarks
-          m_annotations:
-            eln:
-              component: RichTextEditQuantity
         Process of origin:
           kind of
 
@@ -432,35 +334,12 @@ definitions:
       base_sections:
         - "nomad.datamodel.data.EntryData"
       quantities:
-        ID:
-          type: str
-          description: ...
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Timestamp:
-          type: Datetime
-          m_annotations:
-            eln:
-              component: DateTimeEditQuantity
-        Remark:
-          type: str
-          description: General Remarks
-          m_annotations:
-            eln:
-              component: RichTextEditQuantity
         ExperimentType: #all these likley need a controlled vocabulary
           type: str
           description: ExperimentType is the name of the experimental method, e.g. RCA cleaning, Hall-effect measurement
           m_annotations:
             eln:
               component: StringEditQuantity
-        Description:
-          type: str
-          description: General Remarks
-          m_annotations:
-            eln:
-              component: RichTextEditQuantity
         Protocol:
           type: ExperimentalProtocol
           shape: ['*']
@@ -608,18 +487,6 @@ definitions:
         eln:
           hide: []
       quantities:
-        Inventory number:
-          type: str
-          description: inventory number of the piece of equipment
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Serial number:
-          type: str
-          description: The instrument's serial number
-          m_annotations:
-            eln:
-              component: StringEditQuantity
         Version number:
           type: str
           description: Version number of the equipment
@@ -706,25 +573,6 @@ definitions:
             eln:
               component: StringEditQuantity
 
-    Room:
-      base_sections:
-        - nomad.datamodel.data.EntryData
-      m_annotations:
-        eln:
-          hide: []
-      quantities:
-        FAMOS-CODE:
-          type: str
-          description: FAMOS Code from Univis
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        GPS:
-          type: str
-          description: GPS Coordinates of the Room
-          m_annotations:
-            eln:
-              component: StringEditQuantity
 
     Supplier:
       base_sections:
@@ -733,30 +581,6 @@ definitions:
         eln:
           hide: []
       quantities:
-        Name:
-          type: str
-          description: Name of the supplier
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Address:
-          type: str
-          description: The supplier's address
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        How to order:
-          type: str
-          description: Description of how the order should be placed
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-        Contact person:
-          type: str
-          description: Name of the contact person
-          m_annotations:
-            eln:
-              component: StringEditQuantity
         Address of the contact person:
           type: str
           description: The contact person's address
