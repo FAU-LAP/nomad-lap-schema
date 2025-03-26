@@ -39,26 +39,25 @@ class Research_Question_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
-            lane_width="600px",
             properties=SectionProperties(
                 visible=Filter(exclude=["lab_id"]),
-                order=["name", "datetime", "description"],
+                order=["name", "datetime", "description", "tags"],
             ),
         ),
         label="Research Question",
     )
 
 
-class Room_LAP(Schema):
+class Room_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id", "datetime", "description"]),
+                order=["name", "FAMOS_code", "GPS_coordinates", "tags"],
+            ),
+        ),
         label="Room",
-    )
-    short_name = Quantity(
-        type=str,
-        description="Colloquial name of the room",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
     )
     FAMOS_code = Quantity(
         type=str,
@@ -85,7 +84,7 @@ class Supplier_LAP(Schema):
     supplier_address = Quantity(
         type=str,
         description="Address of the supplier",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
     supplier_contact = Quantity(
         type=str,
@@ -95,7 +94,7 @@ class Supplier_LAP(Schema):
     how_to_order = Quantity(
         type=str,
         description="Description of how order should be placed",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
 
 
