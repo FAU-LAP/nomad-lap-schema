@@ -1,10 +1,3 @@
-from typing import (
-    TYPE_CHECKING,
-)
-
-if TYPE_CHECKING:
-    pass
-
 from nomad.config import config
 from nomad.datamodel.data import ArchiveSection, Author, EntryDataCategory, Schema
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
@@ -22,6 +15,9 @@ from nomad.metainfo import (
     Section,
     SubSection,
 )
+from nomad_parser_plugins_camels_files.schema_packages.camels_package import (
+    CamelsMeasurement,
+)
 
 configuration = config.get_plugin_entry_point(
     "nomad_lap_schema.schema_packages:schema_package_entry_point"
@@ -34,10 +30,29 @@ class LAP_Category(EntryDataCategory):
     m_def = Category(label="Applied Physics Schema", categories=[EntryDataCategory])
 
 
+class Research_Question_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+        label="Research Question",
+    )
+    name = Quantity(
+        type=str,
+        description="Name of the research question",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    description = Quantity(
+        type=str,
+        description="Description of the research question",
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
+    )
+
+
 class Room_LAP(Schema):
     m_def = Section(
         categories=[LAP_Category],
         a_eln=ELNAnnotation(lane_width="600px"),
+        label="Room",
     )
     FAMOS_code = Quantity(
         type=str,
@@ -261,6 +276,12 @@ class Sample_LAP(ELNSample):
     sample_identifiers = SubSection(
         section_def=ReadableIdentifiers,
     )
+    research_questions = Quantity(
+        type=Research_Question_LAP,
+        shape=["*"],
+        description="Research questions related to the sample",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
 
 
 class Doping_LAP(ArchiveSection):
@@ -336,6 +357,16 @@ class Wafer_LAP(Sample_LAP):
         section_def=Doping_LAP,
         repeats=True,
     )
+    crystal_structure = Quantity(
+        type=str,
+        description="Crystal structure of the wafer",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    material = Quantity(
+        type=str,
+        description="Material of the wafer",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
 
 
 class Chip_LAP(Sample_LAP):
@@ -391,15 +422,133 @@ class Device_LAP(Sample_LAP):
     )
 
 
-class Experiment_LAP(ELNExperiment):
+class Experiment_Protocol_LAP(Schema):
     m_def = Section(
         categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
+    name = Quantity(
+        type=str,
+        description="Name of the protocol",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    description = Quantity(
+        type=str,
+        description="Description of the protocol",
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
+    )
+    version_number = Quantity(
+        type=str,
+        description="Version number of the protocol",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+
+
+class Experiment_LAP(ELNExperiment):
+    m_def = Section(
+        categories=[],
         a_eln=ELNAnnotation(lane_width="600px"),
     )
     samples = Quantity(
         type=Sample_LAP,
         shape=["*"],
         description="The samples used in the experiment.",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    experiment_type = Quantity(
+        type=str,
+        description="Type of the experiment",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    experimental_protocol = Quantity(
+        type=Experiment_Protocol_LAP,
+        description="The protocol used for the experiment",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    research_questions = Quantity(
+        type=Research_Question_LAP,
+        shape=["*"],
+        description="Research questions related to the experiment",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    facility = Quantity(
+        type=Facility_LAP,
+        description="Facility used in the experiment",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    experimentator = Quantity(
+        type=Author,
+        description="Person who performed the experiment",
+        a_eln=ELNAnnotation(component="AuthorEditQuantity"),
+    )
+    special_equipment = Quantity(
+        type=Equipment_LAP,
+        shape=["*"],
+        description="Special equipment used in the experiment",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+
+
+class Process_LAP(Experiment_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
+
+
+class Measurement_LAP(Experiment_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
+    data_files = Quantity(
+        type=str,
+        shape=["*"],
+        description="The data file with the data of the measurement",
+        a_eln=ELNAnnotation(component="FileEditQuantity"),
+        a_browser=dict(adaptor="RawFileAdaptor", label="Data File"),
+    )
+    camels_measurements = Quantity(
+        type=CamelsMeasurement,
+        shape=["*"],
+        description="The measurements of the camels",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+
+
+class Evaluation_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
+    name = Quantity(
+        type=str,
+        description="Name of the evaluation",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    ID = Quantity(
+        type=str,
+        description="ID of the evaluation",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    datetime = Quantity(
+        type=Datetime,
+        description="The date and time associated with this section.",
+        a_eln=dict(component="DateTimeEditQuantity"),
+    )
+    description = Quantity(
+        type=str,
+        description="Description of the evaluation",
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
+    )
+    performed_by = Quantity(
+        type=Author,
+        description="Person who performed the evaluation",
+        a_eln=ELNAnnotation(component="AuthorEditQuantity"),
+    )
+    experiment = Quantity(
+        type=Experiment_LAP,
+        description="Experiment that was evaluated",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
 
