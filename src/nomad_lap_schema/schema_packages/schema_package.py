@@ -6,9 +6,14 @@ if TYPE_CHECKING:
     pass
 
 from nomad.config import config
-from nomad.datamodel.data import ArchiveSection, Author, Schema, EntryDataCategory
+from nomad.datamodel.data import ArchiveSection, Author, EntryDataCategory, Schema
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
-from nomad.datamodel.metainfo.eln import ELNExperiment, ELNInstrument, ELNSample
+from nomad.datamodel.metainfo.eln import (
+    ELNExperiment,
+    ELNInstrument,
+    ELNSample,
+    ReadableIdentifiers,
+)
 from nomad.metainfo import (
     Category,
     Datetime,
@@ -246,12 +251,15 @@ class Sample_LAP(ELNSample):
     m_def = Section(
         categories=[LAP_Category],
         a_eln=ELNAnnotation(lane_width="600px"),
+        a_template={"sample_identifiers": {}},
     )
-    m_def = Section()
     process_of_origin = Quantity(
         type=Schema,
         description="The process of origin of the sample.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    sample_identifiers = SubSection(
+        section_def=ReadableIdentifiers,
     )
 
 
