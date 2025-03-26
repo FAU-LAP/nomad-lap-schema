@@ -9,7 +9,15 @@ from nomad.config import config
 from nomad.datamodel.data import ArchiveSection, Author, Schema
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
 from nomad.datamodel.metainfo.eln import ELNExperiment, ELNInstrument, ELNSample
-from nomad.metainfo import Datetime, Quantity, SchemaPackage, Section, SubSection
+from nomad.metainfo import (
+    Datetime,
+    Quantity,
+    SchemaPackage,
+    Section,
+    SubSection,
+    MCategory,
+    Category,
+)
 
 configuration = config.get_plugin_entry_point(
     "nomad_lap_schema.schema_packages:schema_package_entry_point"
@@ -18,7 +26,15 @@ configuration = config.get_plugin_entry_point(
 m_package = SchemaPackage()
 
 
+class LAP_Category(MCategory):
+    m_def = Category(label="Applied Physics Schema", categories=[MCategory])
+
+
 class Room_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     FAMOS_code = Quantity(
         type=str,
         description="FAMOS code of the room",
@@ -32,6 +48,10 @@ class Room_LAP(Schema):
 
 
 class Supplier_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     supplier_name = Quantity(
         type=str,
         description="Name of the supplier",
@@ -55,6 +75,10 @@ class Supplier_LAP(Schema):
 
 
 class Equipment_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     inventory_number = Quantity(
         type=str,
         description="Inventory number of the equipment",
@@ -88,6 +112,10 @@ class Equipment_LAP(Schema):
 
 
 class Consumable_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     name = Quantity(
         type=str,
         description="Name of the consumable",
@@ -121,6 +149,10 @@ class Consumable_LAP(Schema):
 
 
 class Facility_LAP(ELNInstrument):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     version_number = Quantity(
         type=str,
         description="Version number of the facility",
@@ -161,6 +193,10 @@ class Facility_LAP(ELNInstrument):
 
 
 class Maintenance_LAP(Schema):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     timestamp = Quantity(
         type=Datetime,
         description="The date and time associated with this section.",
@@ -197,6 +233,10 @@ class Calibration_Parameter(ArchiveSection):
 
 
 class Calibration_LAP(Maintenance_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     calibrated_parameters = SubSection(
         section_def=Calibration_Parameter,
         repeats=True,
@@ -204,6 +244,10 @@ class Calibration_LAP(Maintenance_LAP):
 
 
 class Sample_LAP(ELNSample):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     m_def = Section()
     process_of_origin = Quantity(
         type=Schema,
@@ -213,6 +257,10 @@ class Sample_LAP(ELNSample):
 
 
 class Wafer_LAP(Sample_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     wafer_number = Quantity(
         type=str,
         description="Wafer Number provided by the manufacturer",
@@ -251,6 +299,10 @@ class Wafer_LAP(Sample_LAP):
 
 
 class Chip_LAP(Sample_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     chip_number = Quantity(
         type=str,
         description="Chip Number provided by Jörg",
@@ -278,6 +330,10 @@ class Chip_LAP(Sample_LAP):
 
 
 class Device_LAP(Sample_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     device_number = Quantity(
         type=str,
         description="Device Number on the chip",
@@ -296,6 +352,10 @@ class Device_LAP(Sample_LAP):
 
 
 class Experiment_LAP(ELNExperiment):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(lane_width="600px"),
+    )
     samples = Quantity(
         type=Sample_LAP,
         shape=["*"],
