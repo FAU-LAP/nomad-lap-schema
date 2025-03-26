@@ -6,17 +6,16 @@ if TYPE_CHECKING:
     pass
 
 from nomad.config import config
-from nomad.datamodel.data import ArchiveSection, Author, Schema
+from nomad.datamodel.data import ArchiveSection, Author, Schema, EntryDataCategory
 from nomad.datamodel.metainfo.annotations import ELNAnnotation
 from nomad.datamodel.metainfo.eln import ELNExperiment, ELNInstrument, ELNSample
 from nomad.metainfo import (
+    Category,
     Datetime,
     Quantity,
     SchemaPackage,
     Section,
     SubSection,
-    MCategory,
-    Category,
 )
 
 configuration = config.get_plugin_entry_point(
@@ -26,8 +25,8 @@ configuration = config.get_plugin_entry_point(
 m_package = SchemaPackage()
 
 
-class LAP_Category(MCategory):
-    m_def = Category(label="Applied Physics Schema", categories=[MCategory])
+class LAP_Category(EntryDataCategory):
+    m_def = Category(label="Applied Physics Schema", categories=[EntryDataCategory])
 
 
 class Room_LAP(Schema):
