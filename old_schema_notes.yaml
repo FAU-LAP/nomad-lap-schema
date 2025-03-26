@@ -51,7 +51,6 @@ definitions:
             eln:
               component: ReferenceEditQuantity
 
-   
     Wafer:
       base_sections:
         - ExperimentalObject
@@ -75,28 +74,6 @@ definitions:
           m_annotations:
             eln:
               component: AutocompleteEditQuantity
-        Doping:
-          type: str
-          description: Doping layers starting from the surface of the sample
-          shape: ['*']
-          m_annotations:
-            eln:
-              component: StringEditQuantity
-          subsections:
-            Dopand:
-              type: str
-              description: Dopand atom
-              component: StringEditQuantity
-            Thickness:
-              type: np.float64
-              description: Thickness of the doped layer
-              component: NumberEditQuantity
-              unit: um
-            Concentration:
-              type: np.float64
-              unit: 1/cm**3
-              description: Doping concentration of the layer
-              component: NumberEditQuantity
           
     General_Sample:
       base_sections:

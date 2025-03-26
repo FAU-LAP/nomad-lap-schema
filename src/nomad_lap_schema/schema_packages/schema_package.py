@@ -263,6 +263,35 @@ class Sample_LAP(ELNSample):
     )
 
 
+class Doping_LAP(ArchiveSection):
+    element = Quantity(
+        type=str,
+        description="Element that was doped",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
+    )
+    concentration = Quantity(
+        type=float,
+        unit="1/cm^3",
+        description="Concentration of the doping",
+        a_eln=ELNAnnotation(component="NumberEditQuantity"),
+        a_display={"unit": "1/cm^3"},
+    )
+    thickness = Quantity(
+        type=float,
+        unit="um",
+        description="Thickness of the doping layer",
+        a_eln=ELNAnnotation(component="NumberEditQuantity"),
+        a_display={"unit": "um"},
+    )
+    layer_starting_position = Quantity(
+        type=float,
+        unit="um",
+        description="Starting position of the doping layer",
+        a_eln=ELNAnnotation(component="NumberEditQuantity"),
+        a_display={"unit": "um"},
+    )
+
+
 class Wafer_LAP(Sample_LAP):
     m_def = Section(
         categories=[LAP_Category],
@@ -302,6 +331,10 @@ class Wafer_LAP(Sample_LAP):
         description="Resistivity of the wafer",
         a_eln=ELNAnnotation(component="NumberEditQuantity"),
         a_display={"unit": "V / A"},
+    )
+    doping = SubSection(
+        section_def=Doping_LAP,
+        repeats=True,
     )
 
 
