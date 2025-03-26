@@ -1,7 +1,12 @@
 from nomad.config import config
 from nomad.datamodel.data import ArchiveSection, Author, EntryDataCategory, Schema
-from nomad.datamodel.metainfo.annotations import ELNAnnotation
+from nomad.datamodel.metainfo.annotations import (
+    ELNAnnotation,
+    Filter,
+    SectionProperties,
+)
 from nomad.datamodel.metainfo.eln import (
+    BasicEln,
     ELNExperiment,
     ELNInstrument,
     ELNSample,
@@ -30,21 +35,17 @@ class LAP_Category(EntryDataCategory):
     m_def = Category(label="Applied Physics Schema", categories=[EntryDataCategory])
 
 
-class Research_Question_LAP(Schema):
+class Research_Question_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            lane_width="600px",
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id"]),
+                order=["name", "datetime", "description"],
+            ),
+        ),
         label="Research Question",
-    )
-    name = Quantity(
-        type=str,
-        description="Name of the research question",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
-    )
-    description = Quantity(
-        type=str,
-        description="Description of the research question",
-        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
 
 
@@ -53,6 +54,11 @@ class Room_LAP(Schema):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(lane_width="600px"),
         label="Room",
+    )
+    short_name = Quantity(
+        type=str,
+        description="Colloquial name of the room",
+        a_eln=ELNAnnotation(component="StringEditQuantity"),
     )
     FAMOS_code = Quantity(
         type=str,
