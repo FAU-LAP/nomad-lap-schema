@@ -71,22 +71,23 @@ class Room_LAP(BasicEln):
     )
 
 
-class Supplier_LAP(Schema):
+class Supplier_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id", "datetime", "description"]),
+                order=["name", "contact", "address", "how_to_order", "tags"],
+            ),
+        ),
+        label="Supplier",
     )
-    supplier_name = Quantity(
-        type=str,
-        description="Name of the supplier",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
-    )
-    supplier_address = Quantity(
+    address = Quantity(
         type=str,
         description="Address of the supplier",
         a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
-    supplier_contact = Quantity(
+    contact = Quantity(
         type=str,
         description="Contact of the supplier or name of the contact person",
         a_eln=ELNAnnotation(component="StringEditQuantity"),
@@ -98,10 +99,24 @@ class Supplier_LAP(Schema):
     )
 
 
-class Equipment_LAP(Schema):
+class Equipment_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id", "datetime", "description"]),
+                order=[
+                    "name",
+                    "inventory_number",
+                    "serial_number",
+                    "version_number",
+                    "patchnotes",
+                    "supplier",
+                    "tags",
+                ],
+            ),
+        ),
+        label="Equipment",
     )
     inventory_number = Quantity(
         type=str,
@@ -121,12 +136,7 @@ class Equipment_LAP(Schema):
     patchnotes = Quantity(
         type=str,
         description="Notes of the last changes",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
-    )
-    manufacturer = Quantity(
-        type=str,
-        description="Manufacturer of the equipment",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
     supplier = Quantity(
         type=Supplier_LAP,
@@ -138,12 +148,21 @@ class Equipment_LAP(Schema):
 class Consumable_LAP(Schema):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
-    )
-    name = Quantity(
-        type=str,
-        description="Name of the consumable",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id", "datetime", "description"]),
+                order=[
+                    "name",
+                    "batch_number",
+                    "amount_in_unit",
+                    "supplier",
+                    "storage_room",
+                    "person_who_ordered",
+                    "tags",
+                ],
+            ),
+        ),
+        label="Consumable",
     )
     supplier = Quantity(
         type=Supplier_LAP,
@@ -175,7 +194,23 @@ class Consumable_LAP(Schema):
 class Facility_LAP(ELNInstrument):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["datetime"]),
+                order=[
+                    "name",
+                    "version_number",
+                    "patchnotes",
+                    "description",
+                    "used_consumables",
+                    "responsible_person",
+                    "room",
+                    "equipment",
+                    "tags",
+                ],
+            ),
+        ),
+        label="Facility",
     )
     version_number = Quantity(
         type=str,
@@ -185,12 +220,12 @@ class Facility_LAP(ELNInstrument):
     patchnotes = Quantity(
         type=str,
         description="Notes of the last changes",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
+        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
-    betriebsanweisung = Quantity(
+    description = Quantity(
         type=str,
-        description="Betriebsanweisungen of the facility",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
+        description="Instructions on the facility",
+        a_eln=ELNAnnotation(component="RichTextEditQuantity", label="instructions"),
     )
     used_consumables = Quantity(
         type=Consumable_LAP,
@@ -216,20 +251,23 @@ class Facility_LAP(ELNInstrument):
     )
 
 
-class Maintenance_LAP(Schema):
+class Maintenance_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
-    )
-    timestamp = Quantity(
-        type=Datetime,
-        description="The date and time associated with this section.",
-        a_eln=dict(component="DateTimeEditQuantity"),
-    )
-    description = Quantity(
-        type=str,
-        description="Description of the maintenance",
-        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id"]),
+                order=[
+                    "name",
+                    "datetime",
+                    "description",
+                    "performed_by",
+                    "facility",
+                    "tags",
+                ],
+            ),
+        ),
+        label="Maintenance",
     )
     performed_by = Quantity(
         type=Author,
@@ -257,10 +295,6 @@ class Calibration_Parameter(ArchiveSection):
 
 
 class Calibration_LAP(Maintenance_LAP):
-    m_def = Section(
-        categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
-    )
     calibrated_parameters = SubSection(
         section_def=Calibration_Parameter,
         repeats=True,
@@ -270,16 +304,23 @@ class Calibration_LAP(Maintenance_LAP):
 class Sample_LAP(ELNSample):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
-        a_template={"sample_identifiers": {}},
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "datetime",
+                    "description",
+                    "research_questions",
+                    "process_of_origin",
+                    "tags",
+                ]
+            ),
+        ),
     )
     process_of_origin = Quantity(
         type=Schema,
         description="The process of origin of the sample.",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
-    )
-    sample_identifiers = SubSection(
-        section_def=ReadableIdentifiers,
     )
     research_questions = Quantity(
         type=Research_Question_LAP,
