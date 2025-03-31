@@ -199,6 +199,7 @@ class Facility_LAP(ELNInstrument):
                 visible=Filter(exclude=["datetime"]),
                 order=[
                     "name",
+                    "labe_id",
                     "version_number",
                     "patchnotes",
                     "description",
@@ -248,6 +249,9 @@ class Facility_LAP(ELNInstrument):
         shape=["*"],
         description="Equipment used in the facility",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    facility_identifiers = SubSection(
+        section_def=ReadableIdentifiers,
     )
 
 
@@ -316,6 +320,7 @@ class Sample_LAP(ELNSample):
                 ]
             ),
         ),
+        label="General Sample",
     )
     process_of_origin = Quantity(
         type=Schema,
@@ -327,6 +332,9 @@ class Sample_LAP(ELNSample):
         shape=["*"],
         description="Research questions related to the sample",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    sample_identifiers = SubSection(
+        section_def=ReadableIdentifiers,
     )
 
 
@@ -362,7 +370,28 @@ class Doping_LAP(ArchiveSection):
 class Wafer_LAP(Sample_LAP):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "datetime",
+                    "wafer_number",
+                    "manufacturer",
+                    "material",
+                    "thickness",
+                    "crystal_structure",
+                    "orientation",
+                    "doping",
+                    "resistivity",
+                    "info_pdf",
+                    "description",
+                    "research_questions",
+                    "process_of_origin",
+                    "tags",
+                ]
+            ),
+        ),
+        label="Wafer",
     )
     wafer_number = Quantity(
         type=str,
@@ -418,7 +447,23 @@ class Wafer_LAP(Sample_LAP):
 class Chip_LAP(Sample_LAP):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "datetime",
+                    "description",
+                    "chip_number",
+                    "width",
+                    "length",
+                    "wafer",
+                    "research_questions",
+                    "process_of_origin",
+                    "tags",
+                ]
+            ),
+        ),
+        label="Chip (Sample)",
     )
     chip_number = Quantity(
         type=str,
@@ -449,7 +494,22 @@ class Chip_LAP(Sample_LAP):
 class Device_LAP(Sample_LAP):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "datetime",
+                    "chip",
+                    "device_number",
+                    "device_type",
+                    "description",
+                    "research_questions",
+                    "process_of_origin",
+                    "tags",
+                ]
+            ),
+        ),
+        label="Device (Sample)",
     )
     device_number = Quantity(
         type=str,
@@ -468,20 +528,16 @@ class Device_LAP(Sample_LAP):
     )
 
 
-class Experiment_Protocol_LAP(Schema):
+class Experimental_Protocol_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
-    )
-    name = Quantity(
-        type=str,
-        description="Name of the protocol",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
-    )
-    description = Quantity(
-        type=str,
-        description="Description of the protocol",
-        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id", "datetime"]),
+                order=["name", "description", "version_number", "tags"],
+            ),
+        ),
+        label="Experimental Protocol",
     )
     version_number = Quantity(
         type=str,
@@ -493,7 +549,6 @@ class Experiment_Protocol_LAP(Schema):
 class Experiment_LAP(ELNExperiment):
     m_def = Section(
         categories=[],
-        a_eln=ELNAnnotation(lane_width="600px"),
     )
     samples = Quantity(
         type=Sample_LAP,
@@ -507,7 +562,7 @@ class Experiment_LAP(ELNExperiment):
         a_eln=ELNAnnotation(component="StringEditQuantity"),
     )
     experimental_protocol = Quantity(
-        type=Experiment_Protocol_LAP,
+        type=Experimental_Protocol_LAP,
         description="The protocol used for the experiment",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
@@ -538,14 +593,60 @@ class Experiment_LAP(ELNExperiment):
 class Process_LAP(Experiment_LAP):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "datetime",
+                    "description",
+                    "samples",
+                    "experiment_type",
+                    "experimental_protocol",
+                    "facility",
+                    "experimentator",
+                    "special_equipment",
+                    "research_questions",
+                    "tags",
+                    "lab_id",
+                ]
+            ),
+        ),
+        label="Process",
+    )
+    experiment_type = Quantity(
+        type=str,
+        description="Type of the experiment",
+        a_eln=ELNAnnotation(component="StringEditQuantity", label="process type"),
+    )
+    process_identifiers = SubSection(
+        section_def=ReadableIdentifiers,
     )
 
 
 class Measurement_LAP(Experiment_LAP):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "datetime",
+                    "description",
+                    "samples",
+                    "experiment_type",
+                    "experimental_protocol",
+                    "facility",
+                    "data_files",
+                    "camels_measurements",
+                    "experimentator",
+                    "special_equipment",
+                    "research_questions",
+                    "tags",
+                    "lab_id",
+                ]
+            ),
+        ),
+        label="Measurement",
     )
     data_files = Quantity(
         type=str,
@@ -562,10 +663,23 @@ class Measurement_LAP(Experiment_LAP):
     )
 
 
-class Evaluation_LAP(Schema):
+class Evaluation_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
-        a_eln=ELNAnnotation(lane_width="600px"),
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                order=[
+                    "name",
+                    "ID",
+                    "datetime",
+                    "description",
+                    "performed_by",
+                    "experiment",
+                    "tags",
+                ]
+            ),
+        ),
+        label="Evaluation",
     )
     name = Quantity(
         type=str,
