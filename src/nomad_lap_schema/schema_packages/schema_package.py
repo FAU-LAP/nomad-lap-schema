@@ -145,7 +145,7 @@ class Equipment_LAP(BasicEln):
     )
 
 
-class Consumable_LAP(Schema):
+class Consumable_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
@@ -212,6 +212,7 @@ class Facility_LAP(ELNInstrument):
             ),
         ),
         label="Facility",
+        a_template={"instrument_identifiers": {}},
     )
     version_number = Quantity(
         type=str,
@@ -339,6 +340,7 @@ class Sample_LAP(ELNSample):
             ),
         ),
         label="General Sample",
+        a_template={"sample_identifiers": {}},
     )
     process_of_origin = Quantity(
         type=Schema,
@@ -350,9 +352,6 @@ class Sample_LAP(ELNSample):
         shape=["*"],
         description="Research questions related to the sample",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
-    )
-    sample_identifiers = SubSection(
-        section_def=ReadableIdentifiers,
     )
 
 
@@ -410,6 +409,7 @@ class Wafer_LAP(Sample_LAP):
             ),
         ),
         label="Wafer",
+        a_template={"sample_identifiers": {}},
     )
     wafer_number = Quantity(
         type=str,
@@ -482,6 +482,7 @@ class Chip_LAP(Sample_LAP):
             ),
         ),
         label="Chip (Sample)",
+        a_template={"sample_identifiers": {}},
     )
     chip_number = Quantity(
         type=str,
@@ -528,6 +529,7 @@ class Device_LAP(Sample_LAP):
             ),
         ),
         label="Device (Sample)",
+        a_template={"sample_identifiers": {}},
     )
     device_number = Quantity(
         type=str,
@@ -630,6 +632,7 @@ class Process_LAP(Experiment_LAP):
             ),
         ),
         label="Process",
+        a_template={"experiment_identifiers": {}},
     )
     experiment_type = Quantity(
         type=str,
@@ -665,6 +668,7 @@ class Measurement_LAP(Experiment_LAP):
             ),
         ),
         label="Measurement",
+        a_template={"experiment_identifiers": {}},
     )
     data_files = Quantity(
         type=str,
