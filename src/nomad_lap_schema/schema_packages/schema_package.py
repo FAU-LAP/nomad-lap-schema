@@ -299,6 +299,24 @@ class Calibration_Parameter(ArchiveSection):
 
 
 class Calibration_LAP(Maintenance_LAP):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id"]),
+                order=[
+                    "name",
+                    "datetime",
+                    "description",
+                    "calibrated_parameters",
+                    "performed_by",
+                    "facility",
+                    "tags",
+                ],
+            ),
+        ),
+        label="Calibration",
+    )
     calibrated_parameters = SubSection(
         section_def=Calibration_Parameter,
         repeats=True,
