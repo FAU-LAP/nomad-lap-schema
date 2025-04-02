@@ -14,10 +14,10 @@ from nomad.datamodel.metainfo.eln import (
 )
 from nomad.metainfo import (
     Category,
-    Datetime,
     Quantity,
     SchemaPackage,
     Section,
+    SectionProxy,
     SubSection,
 )
 from nomad_parser_plugins_camels_files.schema_packages.camels_package import (
@@ -35,16 +35,35 @@ class LAP_Category(EntryDataCategory):
     m_def = Category(label="Applied Physics Schema", categories=[EntryDataCategory])
 
 
+class Project_LAP(BasicEln):
+    m_def = Section(
+        categories=[LAP_Category],
+        a_eln=ELNAnnotation(
+            properties=SectionProperties(
+                visible=Filter(exclude=["lab_id", "datetime"]),
+                order=["name", "description", "tags"],
+            ),
+        ),
+        label="Project",
+    )
+
+
 class Research_Question_LAP(BasicEln):
     m_def = Section(
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
                 visible=Filter(exclude=["lab_id"]),
-                order=["name", "datetime", "description", "tags"],
+                order=["name", "datetime", "description", "projects", "tags"],
             ),
         ),
         label="Research Question",
+    )
+    projects = Quantity(
+        type=Project_LAP,
+        shape=["*"],
+        description="Projects related to the research question",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
 
 
@@ -389,6 +408,7 @@ class Wafer_LAP(Sample_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
+                visible=Filter(exclude=["process_of_origin"]),
                 order=[
                     "name",
                     "datetime",
@@ -405,7 +425,7 @@ class Wafer_LAP(Sample_LAP):
                     "research_questions",
                     "process_of_origin",
                     "tags",
-                ]
+                ],
             ),
         ),
         label="Wafer",
@@ -692,7 +712,7 @@ class Evaluation_LAP(BasicEln):
             properties=SectionProperties(
                 order=[
                     "name",
-                    "ID",
+                    "lab_id",
                     "datetime",
                     "description",
                     "performed_by",
@@ -702,26 +722,6 @@ class Evaluation_LAP(BasicEln):
             ),
         ),
         label="Evaluation",
-    )
-    name = Quantity(
-        type=str,
-        description="Name of the evaluation",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
-    )
-    ID = Quantity(
-        type=str,
-        description="ID of the evaluation",
-        a_eln=ELNAnnotation(component="StringEditQuantity"),
-    )
-    datetime = Quantity(
-        type=Datetime,
-        description="The date and time associated with this section.",
-        a_eln=dict(component="DateTimeEditQuantity"),
-    )
-    description = Quantity(
-        type=str,
-        description="Description of the evaluation",
-        a_eln=ELNAnnotation(component="RichTextEditQuantity"),
     )
     performed_by = Quantity(
         type=Author,
