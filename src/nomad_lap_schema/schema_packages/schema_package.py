@@ -17,7 +17,6 @@ from nomad.metainfo import (
     Quantity,
     SchemaPackage,
     Section,
-    SectionProxy,
     SubSection,
 )
 from nomad_parser_plugins_camels_files.schema_packages.camels_package import (
