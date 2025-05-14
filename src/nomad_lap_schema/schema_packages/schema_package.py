@@ -19,9 +19,13 @@ from nomad.metainfo import (
     Section,
     SubSection,
 )
-from nomad_parser_plugins_camels_files.schema_packages.camels_package import (
-    CamelsMeasurement,
-)
+
+try:
+    from nomad_camels_plugin.schema_packages.camels_package import CamelsMeasurement
+
+    CAMELS_INSTALLED = True
+except ImportError:
+    CAMELS_INSTALLED = False
 
 configuration = config.get_plugin_entry_point(
     "nomad_lap_schema.schema_packages:schema_package_entry_point"
@@ -697,7 +701,7 @@ class Measurement_LAP(Experiment_LAP):
         a_browser=dict(adaptor="RawFileAdaptor", label="Data File"),
     )
     camels_measurements = Quantity(
-        type=CamelsMeasurement,
+        type=CamelsMeasurement if CAMELS_INSTALLED else None,
         shape=["*"],
         description="The measurements of the camels",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
