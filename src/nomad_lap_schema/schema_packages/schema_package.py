@@ -638,6 +638,7 @@ class Process_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
+                visible=Filter(exclude=["location"]),
                 order=[
                     "name",
                     "datetime",
@@ -651,7 +652,7 @@ class Process_LAP(Experiment_LAP):
                     "research_questions",
                     "tags",
                     "lab_id",
-                ]
+                ],
             ),
         ),
         label="Process",
@@ -672,6 +673,7 @@ class Measurement_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
+                visible=Filter(exclude=["location"]),
                 order=[
                     "name",
                     "datetime",
@@ -687,7 +689,7 @@ class Measurement_LAP(Experiment_LAP):
                     "research_questions",
                     "tags",
                     "lab_id",
-                ]
+                ],
             ),
         ),
         label="Measurement",
