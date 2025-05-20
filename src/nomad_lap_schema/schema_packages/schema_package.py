@@ -62,6 +62,12 @@ class Research_Question_LAP(BasicEln):
         ),
         label="Research Question",
     )
+    related_papers = Quantity(
+        type=str,
+        shape=["*"],
+        description="Papers related to the research question",
+        a_eln=ELNAnnotation(component="URLEditQuantity"),
+    )
     projects = Quantity(
         type=Project_LAP,
         shape=["*"],
