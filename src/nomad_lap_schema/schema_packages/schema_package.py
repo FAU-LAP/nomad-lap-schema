@@ -470,10 +470,10 @@ class Wafer_LAP(Sample_LAP):
     )
     resistivity = Quantity(
         type=float,
-        unit="Ohm*cm",
+        unit="ohm*cm",
         description="Resistivity of the wafer",
         a_eln=ELNAnnotation(component="NumberEditQuantity"),
-        a_display={"unit": "Ohm*cm"},
+        a_display={"unit": "ohm*cm"},
     )
     doping = SubSection(
         section_def=Doping_LAP,
