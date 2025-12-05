@@ -257,6 +257,13 @@ class Facility_LAP(ELNInstrument):
         description="Instructions on the facility",
         a_eln=ELNAnnotation(component="RichTextEditQuantity", label="instructions"),
     )
+    user_manual = Quantity(
+        type=str,
+        shape =["*"],
+        description="Files describing operating instructions for the facility.",
+        a_eln=ELNAnnotation(component="FileEditQuantity"),
+        a_browser=dict(adaptor="RawFileAdaptor", label="User Manual"),
+    )
     used_consumables = Quantity(
         type=Consumable_LAP,
         shape=["*"],
@@ -311,6 +318,13 @@ class Maintenance_LAP(BasicEln):
         type=Facility_LAP,
         description="Facility that was maintained",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+    )
+    maintenance_logbook = Quantity(
+        type=str,
+        shape =["*"],
+        description="Files related to maintenance",
+        a_eln=ELNAnnotation(component="FileEditQuantity"),
+        a_browser=dict(adaptor="RawFileAdaptor", label="Maintenance Logbook"),
     )
 
 
