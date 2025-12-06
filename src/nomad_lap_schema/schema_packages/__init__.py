@@ -1,5 +1,6 @@
 from nomad.config.models.plugins import SchemaPackageEntryPoint
 from pydantic import Field
+
 from nomad_lap_schema.schema_packages.schema_package import m_package
 
 
