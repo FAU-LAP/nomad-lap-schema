@@ -767,7 +767,8 @@ class SputteringProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment", "experimental_protocol", "research_questions"]),
+                visible=Filter(exclude=["location", "lab_id", "special_equipment", 
+                                        "experimental_protocol", "research_questions"]),
                 order=[
                     "name",
                     "datetime",
@@ -815,7 +816,7 @@ class SputteringProcess_LAP(Experiment_LAP):
     Chamber_pressure = Quantity(
         type=float,
         unit='mbar',
-        description='Base pressure / vacuum in the chamber before or during sputtering.',
+        description='Chamber pressure beforesputtering.',
         a_eln=dict(
             component='NumberEditQuantity',
             defaultDisplayUnit='mbar'
@@ -889,7 +890,8 @@ class ImplantationProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment", "experimental_protocol"]),
+                visible=Filter(exclude=["location", "lab_id", "special_equipment",
+                                        "experimental_protocol"]),
                 order=[
                     "name",
                     "datetime",
@@ -969,7 +971,8 @@ class AnnealingProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment", "experimental_protocol", "research_questions"]),
+                visible=Filter(exclude=["location", "lab_id", "special_equipment",
+                                        "experimental_protocol", "research_questions"]),
                 order=[
                     "name",
                     "datetime",
@@ -1086,7 +1089,8 @@ class OxidationProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment", "experimental_protocol", "research_questions"]),
+                visible=Filter(exclude=["location", "lab_id", "special_equipment", 
+                                        "experimental_protocol", "research_questions"]),
                 order=[
                     "name",
                     "datetime",
