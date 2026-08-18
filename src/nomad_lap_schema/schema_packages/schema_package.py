@@ -761,23 +761,34 @@ class Evaluation_LAP(BasicEln):
 
 class SputteringProcess_LAP(Experiment_LAP):
     """
-    Schema for logging a Thin Film Sputtering deposition process.
+    Schema for logging a Thin Film Sputtering process (DC or HF).
     """
     m_def = Section(
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment", 
-                                        "experimental_protocol", "research_questions"]),
+                visible=Filter
+                    (exclude=[
+                        "location",
+                        "lab_id",
+                        "special_equipment", 
+                        "experimental_protocol",
+                        "research_questions"
+                    ]
+                ),
                 order=[
                     "name",
                     "datetime",
-                    "Material",
+                    "Sputtering_type",
+                    "Sample_material",
+                    "Sputter_target",
                     "Chamber_pressure",
                     "Process_gas",
-                    "Gas_flow_rate",
+                    "Gas_flow",
+                    "High_Voltage",
+                    "Cathode_current",
                     "Plasma_power",
-                    "Deposition_rate",
+                    "Rate",
                     "Final_thickness",
                     "DC_voltage",
                     "description",
@@ -792,7 +803,29 @@ class SputteringProcess_LAP(Experiment_LAP):
         label="Sputtering Process",
     )
 
-    Material = Quantity(
+    Sputtering_type = Quantity(
+        type=str,
+        description='Type of sputtering process (DC or HF).',
+        a_eln=dict(
+            component='EnumEditQuantity',
+            props=dict(
+                suggestions=['DC', 'HF']
+            )
+        )
+    )
+
+    Sample_material = Quantity(
+        type=str,
+        description='Material of the sample being sputtered (e.g., SiC).',
+        a_eln=dict(
+            component='EnumEditQuantity',
+            props=dict(
+                suggestions=['SiC']
+            )
+        )
+    )
+
+    Sputter_target = Quantity(
         type=str,
         description='The type of material sputtered (e.g., Al, Ni, SiO2).',
         a_eln=dict( 
@@ -803,6 +836,77 @@ class SputteringProcess_LAP(Experiment_LAP):
         )
     )
 
+    Chamber_pressure = Quantity(
+            type=float,
+            unit='mbar',
+            description='Chamber pressure during sputtering.',
+            a_eln=dict(
+                component='NumberEditQuantity',
+                defaultDisplayUnit='mbar'
+            )
+        )
+    
+    Process_gas = Quantity(
+            type=str,
+            description='The gas used in the sputtering process.',
+            a_eln=dict(
+                component='EnumEditQuantity',
+                props=dict(
+                    suggestions=['Ar', 'O2', 'N2']
+                )
+            )
+        )
+    
+    Gas_flow = Quantity(
+            type=float,
+            unit='cm**3 / minute',
+            description='Gas flow during the sputtering process (sccm).',
+            a_eln=dict(
+                component='NumberEditQuantity',
+                defaultDisplayUnit='cm**3 / minute'
+            )
+        )
+
+    High_Voltage = Quantity(
+        type=float,
+        unit='kV',
+        description='High voltage applied during HF sputtering.',
+        a_eln=dict(
+            component='NumberEditQuantity',
+            defaultDisplayUnit='kV'
+        )
+    )
+
+    Cathode_current = Quantity(
+        type=float,
+        unit='mA',
+        description='Cathode current during the HF sputtering.',
+        a_eln=dict(
+            component='NumberEditQuantity',
+            defaultDisplayUnit='mA'
+        )
+    )
+
+    Plasma_power = Quantity(
+            type=float,
+            unit='W',
+            description='Power applied during the sputtering process.',
+            a_eln=dict(
+                component='NumberEditQuantity',
+                defaultDisplayUnit='W'
+            )
+        )
+
+    Rate = Quantity(
+            type=float,
+            unit='angstrom / second',
+            description='Rate at which material is deposited on the substrate.',
+            a_eln=dict(
+                component='NumberEditQuantity',
+                defaultDisplayUnit='angstrom / second'
+            )
+        )
+
     Final_thickness = Quantity(
         type=float,
         unit='nm',
@@ -810,47 +914,6 @@ class SputteringProcess_LAP(Experiment_LAP):
         a_eln=dict(
             component='NumberEditQuantity',
             defaultDisplayUnit='nm'
-        )
-    )
-
-    Chamber_pressure = Quantity(
-        type=float,
-        unit='mbar',
-        description='Chamber pressure beforesputtering.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='mbar'
-        )
-    )
-
-    Process_gas = Quantity(
-        type=str,
-        description='The gas used in the sputtering process.',
-        a_eln=dict(
-            component='EnumEditQuantity',
-            props=dict(
-                suggestions=['Ar', 'O2', 'N2']
-            )
-        )
-    )
-
-    Gas_flow_rate = Quantity(
-        type=float,
-        unit='cm**3 / minute',
-        description='Gas flow rate during the sputtering process (sccm).',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='cm**3 / minute'
-        )
-    )
-
-    Deposition_rate = Quantity(
-        type=float,
-        unit='angstrom / second',
-        description='Rate at which material is deposited on the substrate.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='angstrom / second'
         )
     )
 
@@ -864,22 +927,72 @@ class SputteringProcess_LAP(Experiment_LAP):
         )
     )
 
-    Plasma_power = Quantity(
-        type=float,
-        unit='W',
-        description='Power applied during the deposition.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='W'
-        )
-    )
-
     Images = Quantity(
         type=str,
         shape=["*"],
         description="Images of the samples",
         a_eln=ELNAnnotation(component="FileEditQuantity"),
         a_browser=dict(adaptor="RawFileAdaptor", label="Images"),
+    )
+
+class ImplantationStep_LAP(ArchiveSection):
+    m_def = Section(
+        label="Implantation step",
+    )
+
+    Ion_type = Quantity(
+        type=str,
+        description="Type of ion used for implantation (e.g., N, Al, H).",
+        a_eln=ELNAnnotation(
+            component="EnumEditQuantity",
+            props=dict(suggestions=["N", "Al", "H"]),
+        ),
+    )
+
+    Ion_energy = Quantity(
+        type=float,
+        unit="keV",
+        description="Energy of the ions during implantation.",
+        a_eln=ELNAnnotation(
+            component="NumberEditQuantity",
+            defaultDisplayUnit="keV",
+        ),
+    )
+
+    Ion_dose = Quantity(
+        type=float,
+        unit="cm**-2",
+        description="Dose of ions implanted into the sample.",
+        a_eln=ELNAnnotation(
+            component="NumberEditQuantity",
+            defaultDisplayUnit="cm**-2",
+        ),
+    )
+
+    Angle_of_implantation = Quantity(
+        type=float,
+        unit="degree",
+        description="Angle at which the ions are implanted into the sample.",
+        a_eln=ELNAnnotation(
+            component="NumberEditQuantity",
+            defaultDisplayUnit="degree",
+        ),
+    )
+
+    Temperature_during_implantation = Quantity(
+        type=float,
+        unit="C",
+        description="Temperature of the sample during the implantation process.",
+        a_eln=ELNAnnotation(
+            component="NumberEditQuantity",
+            defaultDisplayUnit="C",
+        ),
+    )
+
+    facility = Quantity(
+        type=Facility_LAP,
+        description="Facility used for this implantation step",
+        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
 
 class ImplantationProcess_LAP(Experiment_LAP):
@@ -890,78 +1003,35 @@ class ImplantationProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment",
-                                        "experimental_protocol"]),
+                visible=Filter(
+                    exclude=[
+                        "location",
+                        "lab_id",
+                        "special_equipment",
+                        "experimental_protocol",
+                    ]
+                ),
                 order=[
                     "name",
                     "datetime",
-                    "Ion_type",
-                    "Ion_energy",
-                    "Ion_dose",
-                    "Angle_of_implantation",
-                    "Temperature_during_implantation",
+                    "implantations",
                     "description",
                     "samples",
                     "facility",
                     "experimentator",
                     "Images",
                     "tags",
-                ]
+                ],
             ),
         ),
         label="Implantation Process",
     )
 
-    Ion_type = Quantity(
-        type=str,
-        description='Type of ion used for implantation (e.g., N, Al, H).',
-        a_eln=dict(
-            component='EnumEditQuantity',
-            props=dict(
-                suggestions=['N', 'Al', 'H']
-            )
-        )
+    implantations = SubSection(
+        section_def=ImplantationStep_LAP,
+        repeats=True,
     )
 
-    Ion_energy = Quantity(
-        type=float,
-        unit='keV',
-        description='Energy of the ions during implantation.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='keV'
-        )
-    )
-
-    Ion_dose = Quantity(
-        type=float,
-        unit='cm**-2',
-        description='Dose of ions implanted into the sample.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='cm**-2'
-        )
-    )
-
-    Angle_of_implantation = Quantity(
-        type=float,
-        unit='degree',
-        description='Angle at which the ions are implanted into the sample.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='degree'
-        )
-    )
-
-    Temperature_during_implantation = Quantity(
-        type=float,
-        unit='C',
-        description='Temperature of the sample during the implantation process.',
-        a_eln=dict(
-            component='NumberEditQuantity',
-            defaultDisplayUnit='C'
-        )
-    )
 
 class AnnealingProcess_LAP(Experiment_LAP):
     """
@@ -971,8 +1041,15 @@ class AnnealingProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment",
-                                        "experimental_protocol", "research_questions"]),
+                visible=Filter(
+                    exclude=[
+                        "location",
+                        "lab_id",
+                        "special_equipment",
+                        "experimental_protocol",
+                        "research_questions"
+                    ]
+                ),
                 order=[
                     "name",
                     "datetime",
@@ -1079,8 +1156,6 @@ class AnnealingProcess_LAP(Experiment_LAP):
     )
 
 
-
-
 class OxidationProcess_LAP(Experiment_LAP):
     """
     Schema for logging a Thin Film Oxidation process.
@@ -1089,19 +1164,26 @@ class OxidationProcess_LAP(Experiment_LAP):
         categories=[LAP_Category],
         a_eln=ELNAnnotation(
             properties=SectionProperties(
-                visible=Filter(exclude=["location", "lab_id", "special_equipment", 
-                                        "experimental_protocol", "research_questions"]),
+                visible=Filter(
+                    exclude=[
+                        "location",
+                        "lab_id",
+                        "special_equipment", 
+                        "experimental_protocol",
+                        "research_questions"
+                    ]
+                ),
                 order=[
                     "name",
                     "datetime",
                     "Oxidation_temperature",
                     "Oxidation_time",
-                    "Gas_1",
-                    "Gas_1_flow",
-                    "Gas_1_pressure",
-                    "Gas_2",
-                    "Gas_2_flow",
-                    "Gas_2_pressure",
+                    "Nitrogen_flow",
+                    "Nitrogen_pressure",
+                    "Argon_flow",
+                    "Argon_pressure",
+                    "Oxygen_flow",
+                    "Oxygen_pressure",
                     "description",
                     "samples",
                     "facility",
@@ -1134,62 +1216,60 @@ class OxidationProcess_LAP(Experiment_LAP):
         )
     )
 
-    Gas_1 = Quantity(
-        type=str,
-        description='First gas used in the oxidation process.',
-        a_eln=dict(
-            component='EnumEditQuantity',
-            props=dict(
-                suggestions=['O2', 'N2', 'Ar']
-            )
-        )
-    )
-
-    Gas_1_flow = Quantity(
+    Nitrogen_flow = Quantity(
         type=float,
         unit='percent',
-        description='Flow the first gas during the oxidation process.',
+        description='Flow of nitrogen during the oxidation process.',
         a_eln=dict(
             component='NumberEditQuantity',
             defaultDisplayUnit='percent'
         )
     )
 
-    Gas_1_pressure = Quantity(
+    Nitrogen_pressure = Quantity(
         type=float,
         unit='bar',
-        description='Pressure of the first gas during the oxidation process.',
+        description='Pressure of nitrogen during the oxidation process.',
         a_eln=dict(
             component='NumberEditQuantity',
             defaultDisplayUnit='bar'
         )
     )
 
-    Gas_2 = Quantity(
-        type=str,
-        description='Second gas used in the oxidation process.',
-        a_eln=dict(
-            component='EnumEditQuantity',
-            props=dict(
-                suggestions=['O2', 'N2', 'Ar']
-            )
-        )
-    )
-
-    Gas_2_flow = Quantity(
+    Oxygen_flow = Quantity(
         type=float,
         unit='percent',
-        description='Flow the second gas during the oxidation process.',
+        description='Flow of oxygen during the oxidation process.',
         a_eln=dict(
             component='NumberEditQuantity',
             defaultDisplayUnit='percent'
         )
     )
 
-    Gas_2_pressure = Quantity(
+    Oxygen_pressure = Quantity(
         type=float,
         unit='bar',
-        description='Pressure of the second gas during the oxidation process.',
+        description='Pressure of oxygen during the oxidation process.',
+        a_eln=dict(
+            component='NumberEditQuantity',
+            defaultDisplayUnit='bar'
+        )
+    )
+
+    Argon_flow = Quantity(
+        type=float,
+        unit='percent',
+        description='Flow of argon during the oxidation process.',
+        a_eln=dict(
+            component='NumberEditQuantity',
+            defaultDisplayUnit='percent'
+        )
+    )
+
+    Argon_pressure = Quantity(
+        type=float,
+        unit='bar',
+        description='Pressure of argon during the oxidation process.',
         a_eln=dict(
             component='NumberEditQuantity',
             defaultDisplayUnit='bar'
