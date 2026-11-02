@@ -981,11 +981,11 @@ class ImplantationStep_LAP(ArchiveSection):
 
     Temperature_during_implantation = Quantity(
         type=float,
-        unit="C",
+        unit="celsius",
         description="Temperature of the sample during the implantation process.",
         a_eln=ELNAnnotation(
             component="NumberEditQuantity",
-            defaultDisplayUnit="C",
+            defaultDisplayUnit="celsius",
         ),
     )
 
@@ -1076,11 +1076,11 @@ class AnnealingProcess_LAP(Experiment_LAP):
 
     Anneal_temperature = Quantity(
         type=float,
-        unit='C',
+        unit='celsius',
         description='Temperature at which the annealing process is carried out.',
         a_eln=dict(
             component='NumberEditQuantity',
-            defaultDisplayUnit='C'
+            defaultDisplayUnit='celsius'
         )
     )
 
@@ -1127,21 +1127,21 @@ class AnnealingProcess_LAP(Experiment_LAP):
 
     Process_temperature = Quantity(
         type=float,
-        unit='C',
+        unit='celsius',
         description='Temperature of the process during the annealing process.',
         a_eln=dict(
             component='NumberEditQuantity',
-            defaultDisplayUnit='C'
+            defaultDisplayUnit='celsius'
         )
     )
 
     Buffer_layer_temperature = Quantity(
         type=float,
-        unit='C',
+        unit='celsius',
         description='Temperature of the buffer layer during the annealing process.',
         a_eln=dict(
             component='NumberEditQuantity',
-            defaultDisplayUnit='C'
+            defaultDisplayUnit='celsius'
         )
     )
 
@@ -1198,11 +1198,11 @@ class OxidationProcess_LAP(Experiment_LAP):
 
     Oxidation_temperature = Quantity(
         type=float,
-        unit='C',
+        unit='celsius',
         description='Temperature at which the oxidation process is carried out.',
         a_eln=dict(
             component='NumberEditQuantity',
-            defaultDisplayUnit='C'
+            defaultDisplayUnit='celsius'
         )
     )
 
