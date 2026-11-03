@@ -651,6 +651,13 @@ class Experiment_LAP(ELNExperiment):
         description="Special equipment used in the experiment",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
     )
+    Images = Quantity(
+        type=str,
+        shape=["*"],
+        description="Images of the samples",
+        a_eln=ELNAnnotation(component="FileEditQuantity"),
+        a_browser=dict(adaptor="RawFileAdaptor", label="Images"),
+    )
 
 
 class Process_LAP(Experiment_LAP):
@@ -670,6 +677,7 @@ class Process_LAP(Experiment_LAP):
                     "experimentator",
                     "special_equipment",
                     "research_questions",
+                    "Images",
                     "tags",
                     "lab_id",
                 ],
@@ -707,6 +715,7 @@ class Measurement_LAP(Experiment_LAP):
                     "experimentator",
                     "special_equipment",
                     "research_questions",
+                    "Images",
                     "tags",
                     "lab_id",
                 ],
@@ -723,7 +732,7 @@ class Measurement_LAP(Experiment_LAP):
         a_browser=dict(adaptor="RawFileAdaptor", label="Data File"),
     )
     camels_measurements = Quantity(
-        type=CamelsMeasurement if CAMELS_INSTALLED else None,
+        type=CamelsMeasurement if CAMELS_INSTALLED else ArchiveSection,
         shape=["*"],
         description="The measurements of the camels",
         a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
