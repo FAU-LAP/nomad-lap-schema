@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_lap_schema.schema_packages.schema_package.Research_Question_LAP
+  name: Does nitrogen implantation change the oxide interface on 4H-SiC?
+  datetime: 2025-01-13T09:00:00+00:00
+  description: Made-up research question that links the example wafer to the project.
+  projects:
+    - ../upload/archive/mainfile/project.archive.yaml#data
+  tags:
+    - example
