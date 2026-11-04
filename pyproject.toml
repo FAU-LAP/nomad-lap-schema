@@ -114,6 +114,7 @@ where = ["src"]
 [project.entry-points.'nomad.plugin']
 schema_package_entry_point = "nomad_lap_schema.schema_packages:schema_package_entry_point"
 processes_entry_point = "nomad_lap_schema.schema_packages:processes_entry_point"
+example_upload_entry_point = "nomad_lap_schema.example_uploads:example_upload_entry_point"
 
 [tool.cruft]
 # Avoid updating workflow files, this leads to permissions issues

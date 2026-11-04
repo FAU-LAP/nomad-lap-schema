@@ -1,0 +1,21 @@
+data:
+  m_def: nomad_lap_schema.schema_packages.schema_package.Wafer_LAP
+  name: Example wafer EX-001
+  datetime: 2025-01-20T10:00:00+00:00
+  wafer_number: EX-001
+  manufacturer: Example Wafer Supplier
+  material: 4H-SiC
+  thickness: 350
+  crystal_structure: hexagonal (4H)
+  orientation: (0001), 4 degree off-axis
+  resistivity: 0.02
+  doping:
+    - element: N
+      concentration: 1.0e+16
+      thickness: 10
+      layer_starting_position: 0
+  description: Made-up wafer with a 10 um n-type epitaxial layer.
+  research_questions:
+    - ../upload/archive/mainfile/research_question.archive.yaml#data
+  tags:
+    - example

@@ -1,0 +1,22 @@
+data:
+  m_def: nomad_lap_schema.schema_packages.processes.ImplantationProcess_LAP
+  name: Nitrogen implantation of EX-001
+  datetime: 2025-02-03T08:30:00+00:00
+  implantations:
+    - Ion_type: N
+      Ion_energy: 30
+      Ion_dose: 1.0e+14
+      Angle_of_implantation: 7
+      Temperature_during_implantation: 500
+    - Ion_type: N
+      Ion_energy: 60
+      Ion_dose: 2.0e+14
+      Angle_of_implantation: 7
+      Temperature_during_implantation: 500
+  description: Made-up two-step implantation for a box-shaped nitrogen profile.
+  samples:
+    - ../upload/archive/mainfile/wafer.archive.yaml#data
+  research_questions:
+    - ../upload/archive/mainfile/research_question.archive.yaml#data
+  tags:
+    - example

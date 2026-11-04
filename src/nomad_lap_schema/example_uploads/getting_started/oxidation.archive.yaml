@@ -1,0 +1,18 @@
+data:
+  m_def: nomad_lap_schema.schema_packages.processes.OxidationProcess_LAP
+  name: Dry oxidation of EX-001
+  datetime: 2025-03-10T07:45:00+00:00
+  Oxidation_temperature: 1300
+  Oxidation_time: 60
+  gases:
+    - Gas: O2
+      Flow: 90
+      Pressure: 1
+    - Gas: Ar
+      Flow: 10
+      Pressure: 1
+  description: Made-up dry oxidation that grows the gate oxide after implantation.
+  samples:
+    - ../upload/archive/mainfile/wafer.archive.yaml#data
+  tags:
+    - example

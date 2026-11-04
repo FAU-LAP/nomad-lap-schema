@@ -1,0 +1,6 @@
+data:
+  m_def: nomad_lap_schema.schema_packages.schema_package.Project_LAP
+  name: Example project - SiC MOS test structures
+  description: Made-up project used to show how LAP entries link to each other.
+  tags:
+    - example
