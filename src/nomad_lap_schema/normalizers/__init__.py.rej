@@ -1,0 +1,10 @@
+diff a/src/nomad_lap_schema/normalizers/__init__.py b/src/nomad_lap_schema/normalizers/__init__.py	(rejected hunks)
+@@ -8,7 +8,7 @@ class NewNormalizerEntryPoint(NormalizerEntryPoint):
+     def load(self):
+         from nomad_lap_schema.normalizers.normalizer import NewNormalizer
+ 
+-        return NewNormalizer(**self.dict())
++        return NewNormalizer(**self.model_dump())
+ 
+ 
+ normalizer_entry_point = NewNormalizerEntryPoint(
