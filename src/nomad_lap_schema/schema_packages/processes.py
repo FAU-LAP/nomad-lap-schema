@@ -158,7 +158,10 @@ class ImplantationStep_LAP(ArchiveSection):
     facility = Quantity(
         type=Facility_LAP,
         description="Facility used for this implantation step",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
