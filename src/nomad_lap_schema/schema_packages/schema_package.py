@@ -1,5 +1,10 @@
 from nomad.config import config
-from nomad.datamodel.data import ArchiveSection, Author, EntryDataCategory, Schema
+from nomad.datamodel.data import (
+    ArchiveSection,
+    AuthorReference,
+    EntryDataCategory,
+    Schema,
+)
 from nomad.datamodel.metainfo.annotations import (
     ELNAnnotation,
     Filter,
@@ -72,7 +77,10 @@ class Research_Question_LAP(BasicEln):
         type=Project_LAP,
         shape=["*"],
         description="Projects related to the research question",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
@@ -169,7 +177,10 @@ class Equipment_LAP(BasicEln):
     supplier = Quantity(
         type=Supplier_LAP,
         description="Supplier of the equipment",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
@@ -195,7 +206,10 @@ class Consumable_LAP(BasicEln):
     supplier = Quantity(
         type=Supplier_LAP,
         description="Supplier of the consumable",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     batch_number = Quantity(
         type=str,
@@ -210,10 +224,13 @@ class Consumable_LAP(BasicEln):
     storage_room = Quantity(
         type=Room_LAP,
         description="Storage room of the consumable",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     person_who_ordered = Quantity(
-        type=Author,
+        type=AuthorReference,
         description="Person who ordered the consumable",
         a_eln=ELNAnnotation(component="AuthorEditQuantity"),
     )
@@ -268,23 +285,32 @@ class Facility_LAP(ELNInstrument):
         type=Consumable_LAP,
         shape=["*"],
         description="Consumables used in the facility",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     responsible_person = Quantity(
-        type=Author,
+        type=AuthorReference,
         description="Person responsible for the facility",
         a_eln=ELNAnnotation(component="AuthorEditQuantity"),
     )
     room = Quantity(
         type=Room_LAP,
         description="Room of the facility",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     equipment = Quantity(
         type=Equipment_LAP,
         shape=["*"],
         description="Equipment used in the facility",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     facility_identifiers = SubSection(
         section_def=ReadableIdentifiers,
@@ -310,14 +336,17 @@ class Maintenance_LAP(BasicEln):
         label="Maintenance",
     )
     performed_by = Quantity(
-        type=Author,
+        type=AuthorReference,
         description="Person who performed the maintenance",
         a_eln=ELNAnnotation(component="AuthorEditQuantity"),
     )
     facility = Quantity(
         type=Facility_LAP,
         description="Facility that was maintained",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     maintenance_logbook = Quantity(
         type=str,
@@ -387,13 +416,19 @@ class Sample_LAP(ELNSample):
     process_of_origin = Quantity(
         type=Schema,
         description="The process of origin of the sample.",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     research_questions = Quantity(
         type=Research_Question_LAP,
         shape=["*"],
         description="Research questions related to the sample",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
@@ -549,7 +584,10 @@ class Chip_LAP(Sample_LAP):
     wafer = Quantity(
         type=Wafer_LAP,
         description="The wafer the chip belongs to",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
@@ -582,7 +620,10 @@ class Device_LAP(Sample_LAP):
     chip = Quantity(
         type=Chip_LAP,
         description="The chip the device belongs to",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     device_type = Quantity(
         type=str,
@@ -617,7 +658,10 @@ class Experiment_LAP(ELNExperiment):
         type=Sample_LAP,
         shape=["*"],
         description="The samples used in the experiment.",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     experiment_type = Quantity(
         type=str,
@@ -627,21 +671,30 @@ class Experiment_LAP(ELNExperiment):
     experimental_protocol = Quantity(
         type=Experimental_Protocol_LAP,
         description="The protocol used for the experiment",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     research_questions = Quantity(
         type=Research_Question_LAP,
         shape=["*"],
         description="Research questions related to the experiment",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     facility = Quantity(
         type=Facility_LAP,
         description="Facility used in the experiment",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     experimentator = Quantity(
-        type=Author,
+        type=AuthorReference,
         description="Person who performed the experiment",
         a_eln=ELNAnnotation(component="AuthorEditQuantity"),
     )
@@ -649,7 +702,10 @@ class Experiment_LAP(ELNExperiment):
         type=Equipment_LAP,
         shape=["*"],
         description="Special equipment used in the experiment",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
     Images = Quantity(
         type=str,
@@ -735,7 +791,10 @@ class Measurement_LAP(Experiment_LAP):
         type=CamelsMeasurement if CAMELS_INSTALLED else ArchiveSection,
         shape=["*"],
         description="The measurements of the camels",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
@@ -758,14 +817,17 @@ class Evaluation_LAP(BasicEln):
         label="Evaluation",
     )
     performed_by = Quantity(
-        type=Author,
+        type=AuthorReference,
         description="Person who performed the evaluation",
         a_eln=ELNAnnotation(component="AuthorEditQuantity"),
     )
     experiment = Quantity(
         type=Experiment_LAP,
         description="Experiment that was evaluated",
-        a_eln=ELNAnnotation(component="ReferenceEditQuantity"),
+        a_eln=ELNAnnotation(
+            component="ReferenceEditQuantity",
+            props=dict(showSectionLabel=True),
+        ),
     )
 
 
